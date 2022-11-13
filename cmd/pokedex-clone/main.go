@@ -6,30 +6,38 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"pokedex-clone/internal/api"
 	"pokedex-clone/internal/pokemon"
 	"pokedex-clone/internal/storage"
 	"syscall"
 	"time"
 
-	"github.com/gorilla/mux"
+	"github.com/gin-gonic/gin"
 )
 
 const (
-	ctxTimeout        = 5 * time.Second
-	readHeaderTimeout = 3 * time.Second
+	ctxTimeout    = 5 * time.Second
+	serverTimeout = 3 * time.Second
+	pokeAPIURL    = "https://pokeapi.co/api/v2/pokemon-species/"
 )
 
 func main() {
 	storageAPI := storage.NewStore()
-	service := pokemon.NewService(storageAPI)
+	pokeAPI := api.NewClient(pokeAPIURL, serverTimeout, storageAPI)
+	service := pokemon.NewService(storageAPI, pokeAPI)
 
-	r := mux.NewRouter()
-	r.Handle("/pokemon/{name}", mw(http.HandlerFunc(service.Get))).Methods(http.MethodGet)
+	// Creates a gin router with default middleware:
+	// logger and recovery (crash-free) middleware
+	router := gin.Default()
+	router.GET("/pokemon/:name", service.Get)
+	// router.GET("/pokemon/translated/:name", service.GetTranslated)
 
 	httpServer := &http.Server{
 		Addr:              ":5000",
-		Handler:           r,
-		ReadHeaderTimeout: readHeaderTimeout,
+		Handler:           router,
+		ReadHeaderTimeout: serverTimeout,
+		// WriteTimeout:      serverTimeout,
+		// ReadTimeout:       serverTimeout,
 	}
 
 	signalChan := make(chan os.Signal, 1)
@@ -54,11 +62,4 @@ func main() {
 			log.Println(err)
 		}
 	}
-}
-
-func mw(h http.Handler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Content-type", "application/json")
-		h.ServeHTTP(w, r)
-	})
 }

@@ -56,7 +56,7 @@ jobs:
           go-version: "1.19"
       - name: Download
         run: go mod download
-      - name: Build GCS
-        run: go build .
+      - name: Build
+        run: go build ./...
       - name: Run unit tests
         run: go test ./... -cover

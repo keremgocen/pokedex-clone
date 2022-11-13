@@ -4,6 +4,6 @@ type ErrorResponse struct {
 	Message string `json:"message"`
 }
 
-// type GetPokemonRequest struct {
-// 	Name string `json:"name" validate:"required"`
-// }
+type NameURI struct {
+	Name string `uri:"name" binding:"required"`
+}
