@@ -10,26 +10,10 @@ type Store struct {
 	values map[string]interface{}
 }
 
-// todo remove
-type Pokemon struct {
-	Name        string `json:"name"`
-	Description string `json:"description"`
-	Habitat     string `json:"habitat"`
-	IsLegendary bool   `json:"is_legendary"`
-}
-
 // NewStore creates an empty Store.
 func NewStore() *Store {
-	pokemons := make(map[string]interface{})
-	// todo remove
-	pokemons["mewtwo"] = Pokemon{
-		Name:        "mewtwo",
-		Description: "It was created by a scientist after years of horrific gene splicing and DNA engineering experiments.",
-		Habitat:     "rare",
-		IsLegendary: true,
-	}
 	return &Store{
-		values: pokemons,
+		values: make(map[string]interface{}),
 	}
 }
 
