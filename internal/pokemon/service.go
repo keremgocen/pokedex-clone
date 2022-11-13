@@ -22,7 +22,7 @@ func NewService(storage *storage.Store, pokeAPIClient *api.Client) *Service {
 }
 
 func (s *Service) Get(c *gin.Context) {
-	var req PokemonNameUri
+	var req NameURI
 	if err := c.ShouldBindUri(&req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
