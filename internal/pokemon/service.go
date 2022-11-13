@@ -61,17 +61,6 @@ func (s *Service) Get(c *gin.Context) {
 // 	}
 // 	name := req.Name
 
-// 	// todo remove
-// 	err := s.StorageAPI.Save("mewtwo", Pokemon{
-// 		Name:        "mewtwo",
-// 		Description: "It was created by a scientist after years of horrific gene splicing and DNA engineering experiments.",
-// 		Habitat:     "rare",
-// 		IsLegendary: true,
-// 	})
-// 	if err != nil {
-// 		log.Println("oley")
-// 	}
-
 // 	if !s.StorageAPI.Exist(name) {
 // 		c.JSON(http.StatusNotFound, fmt.Sprintf("missing pokemon with name %v", name))
 // 		return
