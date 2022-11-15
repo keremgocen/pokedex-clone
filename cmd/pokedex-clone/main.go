@@ -16,21 +16,29 @@ import (
 )
 
 const (
-	ctxTimeout    = 5 * time.Second
-	serverTimeout = 3 * time.Second
-	pokeAPIURL    = "https://pokeapi.co/api/v2/pokemon-species/"
+	ctxTimeout         = 5 * time.Second
+	serverTimeout      = 3 * time.Second
+	pokeAPIURL         = "https://pokeapi.co/api/v2/pokemon-species/"
+	translationsAPIURL = "https://api.funtranslations.com/translate/"
 )
 
 func main() {
 	storageAPI := storage.NewStore()
-	pokeAPI := api.NewClient(pokeAPIURL, serverTimeout, storageAPI)
-	service := pokemon.NewService(storageAPI, pokeAPI)
+	pokeAPIClient := api.NewClient(pokeAPIURL, serverTimeout, storageAPI)
+	pokeAPI := api.Poke{
+		Client: pokeAPIClient,
+	}
+	translationsAPIClient := api.NewClient(translationsAPIURL, serverTimeout, storageAPI)
+	translationsAPI := api.Translations{
+		Client: translationsAPIClient,
+	}
+	service := pokemon.NewService(storageAPI, pokeAPI, translationsAPI)
 
 	// Creates a gin router with default middleware:
 	// logger and recovery (crash-free) middleware
 	router := gin.Default()
 	router.GET("/pokemon/:name", service.Get)
-	// router.GET("/pokemon/translated/:name", service.GetTranslated)
+	router.GET("/pokemon/translated/:name", service.GetTranslated)
 
 	httpServer := &http.Server{
 		Addr:              ":5000",

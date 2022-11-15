@@ -15,25 +15,33 @@ import (
 )
 
 const (
-	ctxTimeout    = 5 * time.Second
-	serverTimeout = 3 * time.Second
-	pokeAPIURL    = "https://pokeapi.co/api/v2/pokemon-species/"
+	ctxTimeout         = 5 * time.Second
+	serverTimeout      = 3 * time.Second
+	pokeapiURL         = "https://pokeapi.co/api/v2/pokemon-species/"
+	translationsAPIURL = "https://api.funtranslations.com/translate/"
 )
 
-func run() (*gin.Engine, *pokemon.Service) {
+func run() *gin.Engine {
 	storageAPI := storage.NewStore()
-	pokeAPI := api.NewClient(pokeAPIURL, serverTimeout, storageAPI)
-	service := pokemon.NewService(storageAPI, pokeAPI)
+	pokeAPIClient := api.NewClient(pokeapiURL, serverTimeout, storageAPI)
+	pokeAPI := api.Poke{
+		Client: pokeAPIClient,
+	}
+	translationsAPIClient := api.NewClient(translationsAPIURL, serverTimeout, storageAPI)
+	translationsAPI := api.Translations{
+		Client: translationsAPIClient,
+	}
+	service := pokemon.NewService(storageAPI, pokeAPI, translationsAPI)
 
 	router := gin.Default()
 	router.GET("/pokemon/:name", service.Get)
-	// router.GET("/pokemon/translated/:name", service.GetTranslated)
+	router.GET("/pokemon/translated/:name", service.GetTranslated)
 
-	return router, service
+	return router
 }
 
 func TestGetPokemon(t *testing.T) {
-	router, _ := run()
+	router := run()
 
 	defaultPokemon := &api.PokemonSpecies{
 		Name: "mewtwo",
@@ -77,18 +85,83 @@ func TestGetPokemon(t *testing.T) {
 			req, err := http.NewRequest(http.MethodGet, "/pokemon/"+tc.name, nil)
 			assert.Equal(t, err, tc.wantErr)
 
-			// storageErr := service.StorageAPI.Save(tc.name, tc.cachedPokemon)
+			// storageErr := service.Storageapi.Save(tc.name, tc.cachedPokemon)
 			// assert.Nil(t, storageErr)
 
 			rr := httptest.NewRecorder()
 			router.ServeHTTP(rr, req)
 			assert.Equal(t, tc.wantStatus, rr.Code)
 
-			var pokemon api.PokemonSpecies
+			var pokemon pokemon.Pokemon
 			err = json.Unmarshal(rr.Body.Bytes(), &pokemon)
 			assert.Nil(t, err)
 
 			assert.Equal(t, tc.name, pokemon.Name)
+		})
+	}
+}
+
+func TestGetPokemonTranslation(t *testing.T) {
+	router := run()
+	yodaTranslatedPokemon := pokemon.Pokemon{
+		Name:        "mewtwo",
+		Description: "Created by a scientist after years of horrific gene splicing and dna engineering experiments,  it was.",
+		Habitat:     "rare",
+		IsLegendary: true,
+	}
+
+	// defaultPokemon := &api.PokemonSpecies{
+	// 	Name: "mewtwo",
+	// 	FlaworTextEntries: []api.FlaworText{
+	// 		{
+	// 			FlaworText: "some text here",
+	// 			Language: api.NamedAPIResource{
+	// 				Name: "en",
+	// 				URL:  "",
+	// 			},
+	// 			Version: api.NamedAPIResource{
+	// 				Name: "1",
+	// 				URL:  "",
+	// 			},
+	// 		},
+	// 	},
+	// }
+
+	tests := map[string]struct {
+		name          string
+		wantStatus    int
+		wantErr       error
+		cachedPokemon *pokemon.Pokemon
+	}{
+		"get pokemon returns 200 with expected name": {
+			name:          "mewtwo",
+			wantStatus:    http.StatusOK,
+			wantErr:       nil,
+			cachedPokemon: &yodaTranslatedPokemon,
+		},
+		// "missing pokemon returns 404": {
+		// 	name:          "unknown",
+		// 	wantStatus:    http.StatusNotFound,
+		// 	wantErr:       nil,
+		// 	cachedPokemon: nil,
+		// },
+	}
+
+	for name, tc := range tests {
+		t.Run(name, func(t *testing.T) {
+			req, err := http.NewRequest(http.MethodGet, "/pokemon/translated/"+tc.name, nil)
+			assert.Equal(t, err, tc.wantErr)
+
+			rr := httptest.NewRecorder()
+			router.ServeHTTP(rr, req)
+			assert.Equal(t, tc.wantStatus, rr.Code)
+
+			var pokemon pokemon.Pokemon
+			err = json.Unmarshal(rr.Body.Bytes(), &pokemon)
+			assert.Nil(t, err)
+
+			assert.Equal(t, tc.cachedPokemon.Name, pokemon.Name)
+			assert.Equal(t, tc.cachedPokemon.Description, pokemon.Description)
 		})
 	}
 }
@@ -111,7 +184,7 @@ func TestGetPokemon(t *testing.T) {
 // 	req, err := http.NewRequest(http.MethodGet, "/pokemon/malformedPokemon", nil)
 // 	assert.Nil(t, err)
 
-// 	saveErr := service.StorageAPI.Save("malformedPokemon", "malformedPokemonObjectStr")
+// 	saveErr := service.Storageapi.Save("malformedPokemon", "malformedPokemonObjectStr")
 // 	assert.Nil(t, saveErr)
 
 // 	rr := httptest.NewRecorder()

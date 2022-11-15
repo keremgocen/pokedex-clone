@@ -1,11 +1,9 @@
 package api
 
 import (
-	"context"
 	"encoding/json"
 	"errors"
 	"fmt"
-	"log"
 	"net/http"
 	"pokedex-clone/internal/storage"
 	"time"
@@ -15,6 +13,7 @@ type Client struct {
 	BaseURL    string
 	HTTPClient *http.Client
 	APICache   *storage.Store
+	// todo retry/backoff
 }
 
 func NewClient(url string, timeout time.Duration, cache *storage.Store) *Client {
@@ -25,31 +24,6 @@ func NewClient(url string, timeout time.Duration, cache *storage.Store) *Client 
 		},
 		APICache: cache,
 	}
-}
-
-func (c *Client) GetSpecies(ctx context.Context, name string) (*PokemonSpecies, error) {
-	req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("%s/%s", c.BaseURL, name), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	req = req.WithContext(ctx)
-
-	var res PokemonSpecies
-	if res, ok := c.APICache.Load(name); ok {
-		log.Println("returning cached", name)
-		return res.(*PokemonSpecies), nil
-	}
-
-	if reqErr := c.sendRequest(req, &res); reqErr != nil {
-		return nil, reqErr
-	}
-
-	if cacheErr := c.APICache.Save(name, &res); cacheErr != nil {
-		log.Printf("failed to save %s in cache: [%v]", name, cacheErr.Error())
-	}
-
-	return &res, nil
 }
 
 func (c *Client) sendRequest(req *http.Request, v interface{}) error {
