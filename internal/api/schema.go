@@ -23,3 +23,34 @@ type NamedAPIResource struct {
 	Name string `json:"name"`
 	URL  string `json:"url"`
 }
+
+type TranslationText struct {
+	Text string `json:"text"`
+}
+
+// todo remove
+//
+//	{
+//		"success": {
+//		  "total": 1
+//		},
+//		"contents": {
+//		  "translated": "Lost a planet,  master obiwan has.",
+//		  "text": "Master Obiwan has lost a planet.",
+//		  "translation": "yoda"
+//		}
+//	  }
+type Success struct {
+	Total int `json:"total"`
+}
+
+type Contents struct {
+	Translated  string `json:"translated"`
+	Text        string `json:"text"`
+	Translation string `json:"translation"`
+}
+
+type TranslateAPIResponse struct {
+	Success  Success  `json:"success"`
+	Contents Contents `json:"contents"`
+}
