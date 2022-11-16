@@ -2,7 +2,13 @@
 
 ## How to Run it?
 
-TBD
+### Building the docker image
+
+`-> docker build -f docker/Dockerfile.multistage --tag pokedex-clone .`
+
+### Running and attaching to the docker image locally
+
+`-> docker run -p 5000:5000 --name test pokedex-clone`
 
 ## Assumptions
 
@@ -20,8 +26,8 @@ Given a Pokemon name, returns standard Pokemon description and additional inform
 
 `/HTTP/GET /pokemon/<pokemon name>`
 
-Example call (using httpie):
-`http http://localhost:5000/pokemon/mewtwo`
+Example call (using curl):
+`curl http://localhost:5000/pokemon/mewtwo`
 
 Example API response:
 
@@ -45,8 +51,8 @@ Given a Pokemon name, return translated Pokemon description and other basic info
 
 `HTTP/GET /pokemon/translated/<pokemon name>`
 
-Example call (using httpie):
-`http http://localhost:5000/pokemon/translated/mewtwo`
+Example call (using curl):
+`curl http://localhost:5000/pokemon/translated/mewtwo`
 
 Example response:
 
