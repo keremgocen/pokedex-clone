@@ -8,8 +8,10 @@ import (
 	"net/http"
 )
 
+//go:generate mockgen -destination mocks/translations.go -package mocks -source translations.go
+
 type TranslationsAPI interface {
-	GetTranslation(ctx context.Context, name, text string, translationType TranslationType) (string, error)
+	GetTranslation(ctx context.Context, name, text string, translationType TranslationType) (*TranslateAPIResponse, error)
 }
 
 type Translations struct {
@@ -24,7 +26,7 @@ const (
 	TTypeShakespeare TranslationType = "shakespeare.json"
 )
 
-func (t *Translations) GetTranslation(
+func (t Translations) GetTranslation(
 	ctx context.Context,
 	name, text string,
 	translationType TranslationType,

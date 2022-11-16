@@ -7,6 +7,8 @@ import (
 	"net/http"
 )
 
+//go:generate mockgen -destination mocks/poke.go -package mocks -source poke.go
+
 type PokeAPI interface {
 	GetSpecies(ctx context.Context, name string) (*PokemonSpecies, error)
 }
@@ -16,7 +18,7 @@ type Poke struct {
 	// retry/backoff
 }
 
-func (p *Poke) GetSpecies(ctx context.Context, name string) (*PokemonSpecies, error) {
+func (p Poke) GetSpecies(ctx context.Context, name string) (*PokemonSpecies, error) {
 	req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("%s%s", p.Client.BaseURL, name), nil)
 	if err != nil {
 		return nil, err

@@ -5,7 +5,7 @@ type ErrorResponse struct {
 }
 
 type NameURI struct {
-	Name string `uri:"name" binding:"required"`
+	Name string `uri:"name" binding:"required,alpha"`
 }
 
 type Pokemon struct {

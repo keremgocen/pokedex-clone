@@ -44,8 +44,8 @@ func main() {
 		Addr:              ":5000",
 		Handler:           router,
 		ReadHeaderTimeout: serverTimeout,
-		// WriteTimeout:      serverTimeout,
-		// ReadTimeout:       serverTimeout,
+		WriteTimeout:      serverTimeout,
+		ReadTimeout:       serverTimeout,
 	}
 
 	signalChan := make(chan os.Signal, 1)

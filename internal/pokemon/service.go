@@ -15,11 +15,11 @@ const (
 
 type Service struct {
 	StorageAPI      *storage.Store
-	PokeAPI         api.Poke
-	TranslationsAPI api.Translations
+	PokeAPI         api.PokeAPI
+	TranslationsAPI api.TranslationsAPI
 }
 
-func NewService(storage *storage.Store, pokeAPI api.Poke, translationsAPI api.Translations) *Service {
+func NewService(storage *storage.Store, pokeAPI api.PokeAPI, translationsAPI api.TranslationsAPI) *Service {
 	return &Service{
 		StorageAPI:      storage,
 		PokeAPI:         pokeAPI,
