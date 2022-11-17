@@ -4,7 +4,7 @@
 
 ### Building the docker image
 
-`-> docker build -f docker/Dockerfile.multistage --tag pokedex-clone .`
+`-> docker build --tag pokedex-clone .`
 
 ### Running and attaching to the docker image locally
 
