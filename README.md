@@ -14,8 +14,6 @@
 
 TBD
 
-- cache invalidation (timeout, LRU etc.)
-
 Fun with Pokemons
 
 ### Pokemon API
