@@ -5,24 +5,21 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
-	"pokedex-clone/pkg/storage"
 	"time"
 )
 
 type Client struct {
 	BaseURL    string
 	HTTPClient *http.Client
-	APICache   *storage.Store
 	// todo retry/backoff
 }
 
-func NewClient(url string, timeout time.Duration, cache *storage.Store) *Client {
+func NewClient(url string, timeout time.Duration) *Client {
 	return &Client{
 		BaseURL: url,
 		HTTPClient: &http.Client{
 			Timeout: timeout,
 		},
-		APICache: cache,
 	}
 }
 

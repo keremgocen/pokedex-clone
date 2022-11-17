@@ -24,11 +24,11 @@ const (
 
 func main() {
 	storageAPI := storage.NewStore()
-	pokeAPIClient := api.NewClient(pokeAPIURL, serverTimeout, storageAPI)
+	pokeAPIClient := api.NewClient(pokeAPIURL, serverTimeout)
 	pokeAPI := api.Poke{
 		Client: pokeAPIClient,
 	}
-	translationsAPIClient := api.NewClient(translationsAPIURL, serverTimeout, storageAPI)
+	translationsAPIClient := api.NewClient(translationsAPIURL, serverTimeout)
 	translationsAPI := api.Translations{
 		Client: translationsAPIClient,
 	}
