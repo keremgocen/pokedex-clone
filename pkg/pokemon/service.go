@@ -46,7 +46,7 @@ func (s *Service) Get(c *gin.Context) {
 		c.AbortWithStatusJSON(http.StatusNotFound, err)
 	}
 
-	descriptionText, _ := getFirstEnglishFlavorText(pokemonSpecies.FlaworTextEntries)
+	descriptionText, _ := getFirstEnglishFlavorText(pokemonSpecies.FlavorTextEntries)
 
 	pokemon := Pokemon{
 		Description: descriptionText,
@@ -77,7 +77,7 @@ func (s *Service) GetTranslated(c *gin.Context) {
 	}
 
 	// check description text and maybe skip API calls
-	descriptionText, languageCode := getFirstEnglishFlavorText(pokemonSpec.FlaworTextEntries)
+	descriptionText, languageCode := getFirstEnglishFlavorText(pokemonSpec.FlavorTextEntries)
 	if languageCode != ISO639ENGString {
 		c.JSON(http.StatusOK, Pokemon{
 			Description: descriptionText,
@@ -121,15 +121,15 @@ func (s *Service) GetTranslated(c *gin.Context) {
 	c.JSON(http.StatusOK, p)
 }
 
-func getFirstEnglishFlavorText(entries []api.FlaworText) (string, string) {
+func getFirstEnglishFlavorText(entries []api.FlavorText) (string, string) {
 	if len(entries) > 0 {
 		for _, entry := range entries {
 			if entry.Language.Name == ISO639ENGString {
-				return entry.FlaworText, ISO639ENGString
+				return entry.FlavorText, ISO639ENGString
 			}
 		}
 
-		return entries[0].FlaworText, entries[0].Language.Name
+		return entries[0].FlavorText, entries[0].Language.Name
 	}
 
 	return "", ""

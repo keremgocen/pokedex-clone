@@ -19,9 +19,9 @@ import (
 func TestGetPokemon(t *testing.T) {
 	defaultPokemon := &api.PokemonSpecies{
 		Name: "mewtwo",
-		FlaworTextEntries: []api.FlaworText{
+		FlavorTextEntries: []api.FlavorText{
 			{
-				FlaworText: "some text here",
+				FlavorText: "some text here",
 				Language: api.NamedAPIResource{
 					Name: "en",
 					URL:  "",
@@ -134,9 +134,9 @@ func TestPokemonTranslation200(t *testing.T) {
 
 	cavePokemonSpecies := &api.PokemonSpecies{
 		Name: "mewtwo",
-		FlaworTextEntries: []api.FlaworText{
+		FlavorTextEntries: []api.FlavorText{
 			{
-				FlaworText: "It was created by a scientist after years of horrific gene splicing and dna engineering experiments.",
+				FlavorText: "It was created by a scientist after years of horrific gene splicing and dna engineering experiments.",
 				Language: api.NamedAPIResource{
 					Name: "en",
 					URL:  "",
@@ -159,9 +159,9 @@ func TestPokemonTranslation200(t *testing.T) {
 
 	legendaryPokemonSpecies := &api.PokemonSpecies{
 		Name: "mewlegend",
-		FlaworTextEntries: []api.FlaworText{
+		FlavorTextEntries: []api.FlavorText{
 			{
-				FlaworText: "It was created by a scientist after years of horrific gene splicing and dna engineering experiments.",
+				FlavorText: "It was created by a scientist after years of horrific gene splicing and dna engineering experiments.",
 				Language: api.NamedAPIResource{
 					Name: "en",
 					URL:  "",
@@ -184,9 +184,9 @@ func TestPokemonTranslation200(t *testing.T) {
 
 	shakespeareanPokemonSpecies := &api.PokemonSpecies{
 		Name: "thepoet",
-		FlaworTextEntries: []api.FlaworText{
+		FlavorTextEntries: []api.FlavorText{
 			{
-				FlaworText: "Shakespeare translation of some text",
+				FlavorText: "Shakespeare translation of some text",
 				Language: api.NamedAPIResource{
 					Name: "en",
 					URL:  "",
@@ -287,7 +287,7 @@ func TestPokemonTranslation200(t *testing.T) {
 			mockTranslationsAPI.EXPECT().GetTranslation(
 				gomock.Any(),
 				tc.name,
-				tc.getSpeciesReturns.FlaworTextEntries[0].FlaworText,
+				tc.getSpeciesReturns.FlavorTextEntries[0].FlavorText,
 				tc.translationType).Return(tc.getTranslationReturns, tc.getTranslationErr)
 
 			rr := httptest.NewRecorder()
@@ -313,9 +313,9 @@ func TestFailedPokemonTranslationReturnsDefaults(t *testing.T) {
 
 	frenchPokemonSpecies := &api.PokemonSpecies{
 		Name: "mewtwo",
-		FlaworTextEntries: []api.FlaworText{
+		FlavorTextEntries: []api.FlavorText{
 			{
-				FlaworText: "Some really French text.",
+				FlavorText: "Some really French text.",
 				Language: api.NamedAPIResource{
 					Name: "fr",
 					URL:  "",
@@ -331,9 +331,9 @@ func TestFailedPokemonTranslationReturnsDefaults(t *testing.T) {
 
 	engPokemonSpecies := &api.PokemonSpecies{
 		Name: "mewtwo",
-		FlaworTextEntries: []api.FlaworText{
+		FlavorTextEntries: []api.FlavorText{
 			{
-				FlaworText: "Some English text.",
+				FlavorText: "Some English text.",
 				Language: api.NamedAPIResource{
 					Name: "en",
 					URL:  "",
@@ -349,7 +349,7 @@ func TestFailedPokemonTranslationReturnsDefaults(t *testing.T) {
 
 	unknownPokemonSpecies := &api.PokemonSpecies{
 		Name:              "mewtwo",
-		FlaworTextEntries: []api.FlaworText{{}},
+		FlavorTextEntries: []api.FlavorText{{}},
 		Habitat: api.NamedAPIResource{
 			Name: "cave",
 			URL:  "",
@@ -386,7 +386,7 @@ func TestFailedPokemonTranslationReturnsDefaults(t *testing.T) {
 			getTranslationErr:    nil,
 			translationType:      api.TTypeYoda,
 			translationCallCount: 0,
-			expectedTranslation:  frenchPokemonSpecies.FlaworTextEntries[0].FlaworText,
+			expectedTranslation:  frenchPokemonSpecies.FlavorTextEntries[0].FlavorText,
 		},
 		"pokemon species value is is used when translateAPI returns err": {
 			name:                  "mewtwo",
@@ -398,7 +398,7 @@ func TestFailedPokemonTranslationReturnsDefaults(t *testing.T) {
 			getTranslationErr:     gin.Error{},
 			translationType:       api.TTypeYoda,
 			translationCallCount:  1,
-			expectedTranslation:   engPokemonSpecies.FlaworTextEntries[0].FlaworText,
+			expectedTranslation:   engPokemonSpecies.FlavorTextEntries[0].FlavorText,
 		},
 		"pokemon with no description entries": {
 			name:              "mewtwo",
@@ -438,7 +438,7 @@ func TestFailedPokemonTranslationReturnsDefaults(t *testing.T) {
 			mockTranslationsAPI.EXPECT().GetTranslation(
 				gomock.Any(),
 				tc.name,
-				tc.getSpeciesReturns.FlaworTextEntries[0].FlaworText,
+				tc.getSpeciesReturns.FlavorTextEntries[0].FlavorText,
 				tc.translationType).Times(tc.translationCallCount).Return(tc.getTranslationReturns, tc.getTranslationErr)
 
 			rr := httptest.NewRecorder()
