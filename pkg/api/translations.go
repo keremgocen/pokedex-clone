@@ -44,7 +44,6 @@ func (t Translations) GetTranslation(
 	req = req.WithContext(ctx)
 
 	var res TranslateAPIResponse
-
 	if reqErr := t.Client.sendRequest(req, &res); reqErr != nil {
 		return nil, reqErr
 	}

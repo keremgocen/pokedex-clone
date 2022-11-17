@@ -14,7 +14,7 @@ type PokeAPI interface {
 
 type Poke struct {
 	Client *Client
-	// retry/backoff
+	// retry/backoff config
 }
 
 func (p Poke) GetSpecies(ctx context.Context, name string) (*PokemonSpecies, error) {

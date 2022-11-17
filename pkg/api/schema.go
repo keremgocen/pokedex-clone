@@ -28,18 +28,6 @@ type TranslationText struct {
 	Text string `json:"text"`
 }
 
-// todo remove
-//
-//	{
-//		"success": {
-//		  "total": 1
-//		},
-//		"contents": {
-//		  "translated": "Lost a planet,  master obiwan has.",
-//		  "text": "Master Obiwan has lost a planet.",
-//		  "translation": "yoda"
-//		}
-//	  }
 type Success struct {
 	Total int `json:"total"`
 }

@@ -1,3 +1,7 @@
+// Pokemon package provides the service layer. Exported functions are used by consumers of the API
+// to get pokemon species information via the pokeapi and translations via the funtranslations.
+// API clients and the storage API needs to be initialized outside before being passed to the service
+// constructor as dependency injections.
 package pokemon
 
 import (
