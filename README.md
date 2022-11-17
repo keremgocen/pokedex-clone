@@ -14,8 +14,6 @@
 
 TBD
 
-Fun with Pokemons
-
 ### Pokemon API
 
 #### Endpoint 1 - Basic Pokemon Information
