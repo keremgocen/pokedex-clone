@@ -6,7 +6,7 @@ package mocks
 
 import (
 	context "context"
-	api "pokedex-clone/internal/api"
+	api "pokedex-clone/pkg/api"
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"

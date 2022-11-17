@@ -5,7 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
-	"pokedex-clone/internal/storage"
+	"pokedex-clone/pkg/storage"
 	"time"
 )
 

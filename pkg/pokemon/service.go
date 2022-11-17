@@ -3,8 +3,8 @@ package pokemon
 import (
 	"context"
 	"net/http"
-	"pokedex-clone/internal/api"
-	"pokedex-clone/internal/storage"
+	"pokedex-clone/pkg/api"
+	"pokedex-clone/pkg/storage"
 
 	"github.com/gin-gonic/gin"
 )

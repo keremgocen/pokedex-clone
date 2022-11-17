@@ -6,9 +6,9 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
-	"pokedex-clone/internal/api"
-	"pokedex-clone/internal/pokemon"
-	"pokedex-clone/internal/storage"
+	"pokedex-clone/pkg/api"
+	"pokedex-clone/pkg/pokemon"
+	"pokedex-clone/pkg/storage"
 	"syscall"
 	"time"
 
