@@ -1,8 +1,14 @@
 package api
 
-type errorResponse struct {
+import "fmt"
+
+type apiError struct {
 	Code    int    `json:"code"`
 	Message string `json:"message"`
+}
+
+func (e apiError) Error() string {
+	return fmt.Sprintf("code: %v message: %s", e.Code, e.Message)
 }
 
 // PokemonSpecies represents the returned payload from pokeapi.

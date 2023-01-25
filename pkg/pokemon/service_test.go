@@ -388,7 +388,7 @@ func TestFailedPokemonTranslationReturnsDefaults(t *testing.T) {
 			translationCallCount: 0,
 			expectedTranslation:  frenchPokemonSpecies.FlavorTextEntries[0].FlavorText,
 		},
-		"pokemon species value is is used when translateAPI returns err": {
+		"pokemon species value is used when translateAPI returns err": {
 			name:                  "mewtwo",
 			wantStatus:            http.StatusOK,
 			wantErr:               nil,
