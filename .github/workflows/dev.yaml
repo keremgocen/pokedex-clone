@@ -129,7 +129,6 @@ jobs:
         if: github.event.pull_request.base.sha != ''
         uses: marocchino/sticky-pull-request-comment@v2
         with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           header: unit-test
           message: |
             ### Unit Test Coverage
