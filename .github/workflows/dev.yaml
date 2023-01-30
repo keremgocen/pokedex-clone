@@ -121,6 +121,7 @@ jobs:
             ### Unit Test Coverage
             ${{ steps.test.outputs.total }}
             <details><summary>Coverage diff with base branch</summary>
+ 
             ```diff
             ${{ steps.test.outputs.diff }}
             ```
