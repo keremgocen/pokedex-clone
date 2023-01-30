@@ -17,3 +17,5 @@ vendor/
 
 # vscode debug binary
 __debug_bin
+
+unit.coverprofile
