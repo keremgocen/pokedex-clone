@@ -108,8 +108,8 @@ jobs:
           OUTPUT="${OUTPUT//$'\n'/'%0A'}"
           OUTPUT="${OUTPUT//$'\r'/'%0D'}"
           TOTAL=$(grep 'total:' unit.txt)
-          echo "diff=$OUTPUT" >>$GITHUB_OUTPUT
-          echo "total=$TOTAL" >>$GITHUB_OUTPUT
+          echo "::set-output name=diff::$OUTPUT"
+          echo "::set-output name=total::$TOTAL"
       - name: Store base coverage
         if: ${{ github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main' }}
         run: cp unit.txt unit-base.txt
